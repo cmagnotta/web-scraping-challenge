@@ -16,10 +16,10 @@ mongo = PyMongo(app)
 
 @app.route("/scrape")
 def scraper():
-    listings = mongo.db.listings
-    listings_data = scrape_craigslist.scrape()
-    listings.update({}, listings_data, upsert=True)
-    return redirect("/", code=302)
+    elem = mongo.db.mars_news
+    latest_mars_news = sprape_mars.scrape()
+    latest_mars_news.update({}, listings_data, upsert=True)
+    return redirect("/")
 
 @app.route("/")
 def index():
