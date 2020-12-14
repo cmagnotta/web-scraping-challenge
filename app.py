@@ -18,12 +18,12 @@ mongo = PyMongo(app)
 def scraper():
     elem = mongo.db.mars_news
     latest_mars_news = sprape_mars.scrape()
-    latest_mars_news.update({}, listings_data, upsert=True)
+    latest_mars_news.update({}, upsert=True)
     return redirect("/")
 
 @app.route("/")
 def index():
-    return render_template("index.html", listings=listings)
+    return render_template("index.html", latest_mars_news=latest_mars_news)
 
 
 
