@@ -12,21 +12,23 @@ def init_browser():
     executable_path = {'executable_path':'/usr/local/bin/chromedriver'}
     return Browser("chrome", **executable_path, headless=False)
 
-browser = init_browser()
-url = 'https://mars.nasa.gov/news/'
-browser.visit(url)
+def scrape():
+    browser = init_browser()
+    url = 'https://mars.nasa.gov/news/'
+    browser.visit(url)
+    browser.is_element_present_by_css("ul.item_list li.slide", wait_time=1)
 
-browser.is_element_present_by_css("ul.item_list li.slide", wait_time=1)
+    #LATEST NEWS
+    mars_news = BeautifulSoup(browser.html, 'html.parser')
+    browser.visit(url)
 
-#LATEST NEWS
-mars_news = BeautifulSoup(browser.html, 'html.parser')
-browser.visit(url)
+    elem = mars_news.select_one('ul.item_list li.slide')
+    elem.find("div", class_='content_title').get_text()
 
-elem = mars_news.select_one('ul.item_list li.slide')
-elem.find("div", class_='content_title').get_text()
+    paragraph = elem.find("div", class_='article_teaser_body').get_text()
+    print(paragraph)
 
-paragraph = elem.find("div", class_='article_teaser_body').get_text()
-print(paragraph)
+    return {"paragraph": paragraph}
 
 
 #Visit the url for JPL Featured Space Image here.
@@ -35,6 +37,7 @@ print(paragraph)
 #Make sure to save a complete url string for this image.
 
 #PHOTO URL
+"""
 photo_url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
 browser.visit(photo_url)
 
@@ -60,7 +63,7 @@ hemisphere_image_urls = [
 
 
 
-"""
+
 def scrape():
     browser = init_browser()
     listings = []

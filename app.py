@@ -11,14 +11,15 @@ hemisphere_image_urls = [
     {"title": "Schiaparelli Hemisphere", "img_url": "https://astrogeology.usgs.gov/cache/images/08eac6e22c07fb1fe72223a79252de20_schiaparelli_enhanced.tif_thumb.png"},
     {"title": "Syrtis Major Hemisphere", "img_url": "https://astrogeology.usgs.gov/cache/images/55a0a1e2796313fdeafb17c35925e8ac_syrtis_major_enhanced.tif_thumb.png"},
 ]
-app.config["MONGO_URI"] = "index.html"
+app.config["MONGO_URI"] = "mongodb://cmagnotta:cmagnotta@cluster0.ebt3z.mongodb.net/marsnews"
 mongo = PyMongo(app)
 
 @app.route("/scrape")
 def scraper():
     elem = mongo.db.mars_news
     latest_mars_news = sprape_mars.scrape()
-    latest_mars_news.update({}, upsert=True)
+    print(latest_mars_news)
+    elem.update({}, upsert=True)
     return redirect("/")
 
 @app.route("/")
